@@ -45,7 +45,8 @@ int returnNumberOfCars() {
 
 int returnTotalAvailableCars() {
     int totalAvailableCars = 0;
-    for (int i = 0; i < returnNumberOfCars(); i++) {
+    int numberOfCars = returnNumberOfCars();
+    for (int i = 0; i < numberOfCars; i++) {
         totalAvailableCars += availableCars[i];
     }
     return totalAvailableCars;
@@ -180,7 +181,8 @@ void showCarTypes() {
     printf("Car types:\n");
     printf("%-3s | %-20s | %-15s\n", "ID", "Model", "Price");
     printf("________________________________________\n");
-    for (int i = 0; i < returnNumberOfCars(); i++) {
+    int numberOfCars = returnNumberOfCars();
+    for (int i = 0; i < numberOfCars; i++) {
         printf("%-3d | %-20s | %-15f\n", i, carTypes[i], carPrices[i]);
     }
 }
@@ -309,13 +311,14 @@ void menuViewCarsStockSort() {
 //  https://www.programmingsimplified.com/c/source-code/c-program-bubble-sort
 
     int sortedCarsTypeIndex[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-    for (int i = 0; i < returnNumberOfCars(); ++i) {
+    int numberOfCars = returnNumberOfCars();
+    for (int i = 0; i < numberOfCars; ++i) {
         sortedavailableCars[i] = availableCars[i];
     }
 
-    for (int i = 0; i < returnNumberOfCars() - 1; ++i) {
+    for (int i = 0; i < numberOfCars - 1; ++i) {
         int swapped = 0;
-        for (int j = 0; j < returnNumberOfCars() - i - 1; ++j) {
+        for (int j = 0; j < numberOfCars - i - 1; ++j) {
             if (sortedavailableCars[j] < sortedavailableCars[j + 1]) {
 
                 int temp = sortedavailableCars[j];
@@ -338,7 +341,7 @@ void menuViewCarsStockSort() {
     printf("%-3s | %-20s | %-10s\n", "ID", "Model", "Amount");
     printf("_______________________________________\n");
 
-    for (int i = 0; i < returnNumberOfCars(); ++i) {
+    for (int i = 0; i < numberOfCars; ++i) {
         printf("%-3d | %-20s | %-10d\n", i, carTypes[sortedCarsTypeIndex[i]], sortedavailableCars[i]);
     }
     printf("\n");
