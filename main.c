@@ -242,6 +242,9 @@ void menuBuyCar() {
     printf("\n\nHow old are you? age: ");
     scanf("\n%d", &age);
     if (age < 18) {
+        printf("please enter number!");
+        return;
+    } else if (age == 0) {
         printf("Sorry, we can't sell car under 18 years old!");
         return;
     }
