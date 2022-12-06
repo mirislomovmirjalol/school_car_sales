@@ -1,7 +1,3 @@
-// needed to allow Visual Studio to work with scanf()
-#define _CRT_SECURE_NO_WARNINGS
-
-// required to enable use of scanf() and printf()
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -32,7 +28,7 @@ char carTypes[10][30] = {"Range Rover", "Audi A8", "BMW7 Series", "Mercedes CLS"
                          "Mercedes S-Class", "Tesla Model Y", "Mercedes EQS", "Mercedes G-class"};
 int availableCars[10] = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
 char customerNames[MAX_SALES][201];
-int sortedavailableCars[10];
+int sortedAvailableCars[10];
 
 // file path
 char fileName[] = "/Users/mirjalol/sites/study/car-sales/data.csv";
@@ -241,10 +237,10 @@ void menuBuyCar() {
     int age = 0;
     printf("\n\nHow old are you? age: ");
     scanf("\n%d", &age);
-    if (age < 18) {
+    if (age == 0) {
         printf("please enter number!");
         return;
-    } else if (age == 0) {
+    } else if (age < 18) {
         printf("Sorry, we can't sell car under 18 years old!");
         return;
     }
@@ -316,21 +312,21 @@ void menuViewCarsStockSort() {
     int sortedCarsTypeIndex[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     int numberOfCars = returnNumberOfCars();
     for (int i = 0; i < numberOfCars; ++i) {
-        sortedavailableCars[i] = availableCars[i];
+        sortedAvailableCars[i] = availableCars[i];
     }
 
     for (int i = 0; i < numberOfCars - 1; ++i) {
         int swapped = 0;
         for (int j = 0; j < numberOfCars - i - 1; ++j) {
-            if (sortedavailableCars[j] < sortedavailableCars[j + 1]) {
+            if (sortedAvailableCars[j] < sortedAvailableCars[j + 1]) {
 
-                int temp = sortedavailableCars[j];
+                int temp = sortedAvailableCars[j];
                 int tempIndex = sortedCarsTypeIndex[j];
 
                 sortedCarsTypeIndex[j] = sortedCarsTypeIndex[j + 1];
                 sortedCarsTypeIndex[j + 1] = tempIndex;
-                sortedavailableCars[j] = sortedavailableCars[j + 1];
-                sortedavailableCars[j + 1] = temp;
+                sortedAvailableCars[j] = sortedAvailableCars[j + 1];
+                sortedAvailableCars[j + 1] = temp;
 
                 swapped = 1;
             }
@@ -345,7 +341,7 @@ void menuViewCarsStockSort() {
     printf("_______________________________________\n");
 
     for (int i = 0; i < numberOfCars; ++i) {
-        printf("%-3d | %-20s | %-10d\n", i, carTypes[sortedCarsTypeIndex[i]], sortedavailableCars[i]);
+        printf("%-3d | %-20s | %-10d\n", i, carTypes[sortedCarsTypeIndex[i]], sortedAvailableCars[i]);
     }
     printf("\n");
 }
