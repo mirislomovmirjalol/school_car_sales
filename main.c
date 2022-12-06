@@ -48,13 +48,6 @@ int returnTotalAvailableCars() {
     return totalAvailableCars;
 }
 
-void swapUnsignedInt(unsigned int *a, unsigned int *b) {
-    unsigned short temp;
-    temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
 // write data to file
 void writeToFile() {
     FILE *file;
