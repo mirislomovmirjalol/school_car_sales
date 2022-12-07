@@ -1,3 +1,6 @@
+// needed to allow Visual Studio to work with scanf()
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -29,6 +32,13 @@ char carTypes[10][30] = {"Range Rover", "Audi A8", "BMW7 Series", "Mercedes CLS"
 int availableCars[10] = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
 char customerNames[MAX_SALES][201];
 int sortedAvailableCars[10];
+
+//struct
+typedef struct {
+    unsigned int amount, discount, typeOfCar, age;
+    float totalPrice, price;
+    char name[201];
+} Sale;
 
 // file path
 char fileName[] = "/Users/mirjalol/sites/study/car-sales/data.csv";
@@ -67,34 +77,31 @@ void writeToFile() {
 // read data from file and create if file doesn't exist
 void readDataFromFile() {
     FILE *file;
-
+    Sale sales[1000];
     file = fopen(fileName, "r");
     if (file == NULL) {
         file = fopen(fileName, "wb");
         readDataFromFile();
     } else {
         while (1) {
-            unsigned int amount = 0, discount = 0, typeOfCar, age;
-            float totalPrice = 0, price = 0;
-            char name[201];
             int scanResult = fscanf(file, "%d,%f,%d,%f,%d,%u,%[^,],%d", &indexOfSales,
-                                    &totalPrice,
-                                    &typeOfCar,
-                                    &price,
-                                    &amount,
-                                    &discount,
-                                    &name,
-                                    &age);
+                                    &sales->totalPrice,
+                                    &sales->typeOfCar,
+                                    &sales->price,
+                                    &sales->amount,
+                                    &sales->discount,
+                                    sales->name,
+                                    &sales->age);
             if (scanResult == EOF) {
                 break;
             }
-            totalPricePerSale[indexOfSales] = totalPrice;
-            typeOfCarPerSale[indexOfSales] = typeOfCar;
-            carAmountPerSale[indexOfSales] = amount;
-            discountGivenPerSale[indexOfSales] = discount;
-            strcpy(customerNames[indexOfSales], name);
-            customerAgePerSale[indexOfSales] = age;
-            availableCars[typeOfCarPerSale[indexOfSales]] -= amount;
+            totalPricePerSale[indexOfSales] = sales->totalPrice;
+            typeOfCarPerSale[indexOfSales] = sales->typeOfCar;
+            carAmountPerSale[indexOfSales] = sales->amount;
+            discountGivenPerSale[indexOfSales] = sales->discount;
+            strcpy(customerNames[indexOfSales], sales->name);
+            customerAgePerSale[indexOfSales] = sales->age;
+            availableCars[typeOfCarPerSale[indexOfSales]] -= sales->amount;
             indexOfSales++;
         };
     }
@@ -151,6 +158,7 @@ unsigned short checkIsUserIsStudent(char answer) {
         case 'n':
             return FALSE;
     }
+    return 0;
 }
 
 // return true if user is student
@@ -241,8 +249,9 @@ void menuBuyCar() {
 
     /* get customer name */
 
+    char name[201];
     printf("\n\nWhat is your name? Name: ");
-    scanf("\n%s", &customerNames[indexOfSales]);
+    scanf("%s", name);
 
     /* get carType and write to array */
 
@@ -260,6 +269,7 @@ void menuBuyCar() {
     discountGivenPerSale[indexOfSales] = discount;
     totalPricePerSale[indexOfSales] = totalPrice;
     customerAgePerSale[indexOfSales] = age;
+    strcpy(customerNames[indexOfSales], name);
     carsSold += carsNeeded;
     /* output total price and how many cars left */
     printf("\n\nThank you!\n\nYou bought %u cars.\n", carsNeeded);
@@ -351,6 +361,10 @@ void checkCorrectInput(char choice) {
         correctInput = TRUE;
     } else {
         printf("\n\nPlease enter correct menu option!\n\n");
+//  clearing input buffer
+//  I found it on stackoverflow https://stackoverflow.com/questions/7898215/how-to-clear-input-buffer-in-c
+        int c;
+        while ( (c = getchar()) != '\n' && c != EOF ) { }
     }
 }
 
@@ -389,4 +403,5 @@ int main() {
         pauseProgram(choice);
 
     } while (choice != MENU_OPTION_EXIT);
+    return 0;
 }
