@@ -58,6 +58,13 @@ int returnTotalAvailableCars() {
     return totalAvailableCars;
 }
 
+void clearInputBuffer() {
+    //  clearing input buffer
+    //  I found it on stackoverflow https://stackoverflow.com/questions/7898215/how-to-clear-input-buffer-in-c
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF) {}
+}
+
 // write data to file
 void writeToFile() {
     FILE *file;
@@ -84,7 +91,7 @@ void readDataFromFile() {
         readDataFromFile();
     } else {
         while (1) {
-            int scanResult = fscanf(file, "%d,%f,%d,%f,%d,%u,%[^,],%d", &indexOfSales,
+            int scanResult = fscanf(file, "%d,%f,%d,%f,%d,%u,%201[^,],%d", &indexOfSales,
                                     &sales->totalPrice,
                                     &sales->typeOfCar,
                                     &sales->price,
@@ -198,6 +205,7 @@ void menuBuyCar() {
     showCarTypes();
 
     carType = getUnsignedIntFromConsole("\nPlease enter type of car you need: ");
+    clearInputBuffer();
 
 //    this validation checks that entered car type is exist.
     int lengthCarPrices = (sizeof(carPrices) / sizeof(int)) - 1;
@@ -220,6 +228,8 @@ void menuBuyCar() {
         printf("Wrong type of number!");
         return;
     }
+    printf("%d", &carsNeeded);
+    clearInputBuffer();
 
     /* if there is not enough cars, output sorry title */
     if (carsNeeded > availableCars[carType]) {
@@ -233,6 +243,7 @@ void menuBuyCar() {
 
     /* asking is user student */
     char answer = getCharFromConsole("Are you student? Answer 'y' or 'n': ");
+    clearInputBuffer();
 
     /* get customer age */
     int age = 0;
@@ -245,6 +256,7 @@ void menuBuyCar() {
         printf("Sorry, we can't sell car under 18 years old!");
         return;
     }
+    clearInputBuffer();
 
 
     /* get customer name */
@@ -277,6 +289,7 @@ void menuBuyCar() {
     printf("Total price is %f", totalPricePerSale[indexOfSales]);
     printf("\nThere are %u cars left.\n\nHave a good day!", returnTotalAvailableCars());
     indexOfSales++;
+    clearInputBuffer();
 }
 
 void menuViewSales() {
@@ -361,10 +374,7 @@ void checkCorrectInput(char choice) {
         correctInput = TRUE;
     } else {
         printf("\n\nPlease enter correct menu option!\n\n");
-//  clearing input buffer
-//  I found it on stackoverflow https://stackoverflow.com/questions/7898215/how-to-clear-input-buffer-in-c
-        int c;
-        while ( (c = getchar()) != '\n' && c != EOF ) { }
+        clearInputBuffer();
     }
 }
 
